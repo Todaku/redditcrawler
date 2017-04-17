@@ -6,7 +6,7 @@ import re
 
 class RedditSpider(CrawlSpider):    #CrawlSpider let's you go into links on the page; Spider is 1 specific link
     name = "reddit"         # Spider Name - must be unique per spider
-    allowed_domains = ["www.reddit.com","www.youtube.com","streamable.com"]    # Domain - set the scope of the crawler
+    allowed_domains = ["www.reddit.com","www.youtube.com","streamable.com",]    # Domain - set the scope of the crawler
     start_urls = ['https://www.reddit.com/r/anime/']
     # Start URLS is where the crawler will start and perform the rules
     # If there is more than 1 start URL, it will go in order
@@ -38,10 +38,7 @@ class RedditSpider(CrawlSpider):    #CrawlSpider let's you go into links on the 
         print "\n\n\n--------------------------------------------------------------------------------\n\n\n"
         for data in response.xpath("//div[@id='watch-headline-title']/h1/span/@title").extract():
             print data
-        resp = str(response)
-        resp = string = re.sub('\<200 ','',resp)
-        resp = string = re.sub('>','',resp)
-        print resp
+        print response.url
 
     #Rule2 parse
     def parse_streamable(self, response):
@@ -51,15 +48,11 @@ class RedditSpider(CrawlSpider):    #CrawlSpider let's you go into links on the 
             string = re.sub('\<h1 id="title">','',string)
             string = re.sub('\</h1>','',string)
             print string
-
-        resp = str(response)
-        resp = string = re.sub('\<200 ','',resp)
-        resp = string = re.sub('>','',resp)
-        print resp
+        print response.url
 
     # Callback method for a pagentation link
     def pagentation_click(self, response):
         print "------------------------next-------------------------"
 
         #Only parse the first 2 pages
-        if "50" in str(response): quit()
+        if "25" in str(response): quit()
